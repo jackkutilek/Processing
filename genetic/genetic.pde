@@ -1,5 +1,3 @@
-import processing.opengl.*;
-
 import org.jbox2d.util.nonconvex.*;
 import org.jbox2d.dynamics.contacts.*;
 import org.jbox2d.testbed.*;
@@ -9,7 +7,13 @@ import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.p5.*;
 import org.jbox2d.dynamics.*;
 
+import processing.opengl.*;
+
 Physics physics;
+World world;
+Body groundBody;
+
+ArrayList group = new ArrayList();
 
 void setup()
 {
@@ -23,7 +27,13 @@ void setup()
 void initScene()
 {
   physics = new Physics(this, width, height, 0, -9.8,2*width,2*height, width, height, 30);
+  world = physics.getWorld();
   physics.setDensity(1);
+  
+  BodyDef bd = new BodyDef();
+  groundBody = world.createBody(bd);
+  
+  group.add(new Person(100,100));
 }
 
 void draw()
@@ -34,12 +44,6 @@ void draw()
 
 void update()
 {
-  
-}
-
-void render()
-{
-  background(230,230,230);
   if (keyPressed) {
     if (key == '1') {
       physics.createCircle(mouseX, mouseY, random(5,10));
@@ -69,5 +73,41 @@ void render()
       physics.destroy();
       initScene();
     }
+  }
+}
+
+MouseJoint mouseJoint;
+
+void mousePressed()
+{
+   MouseJointDef mjd = new MouseJointDef();
+   Vec2 target = physics.screenToWorld(mouseX,mouseY);
+   mjd.target = target;
+   mjd.maxForce = 1000;
+   mjd.dampingRatio = .5;
+   Person p = (Person)group.get(0);
+   mjd.body1 = groundBody;
+   mjd.body2 = p.torso;
+   mouseJoint = (MouseJoint)physics.getWorld().createJoint(mjd);
+}
+
+void mouseDragged()
+{
+  mouseJoint.setTarget(physics.screenToWorld(mouseX,mouseY));
+}
+
+void mouseReleased()
+{
+  physics.removeJoint(mouseJoint);
+}
+
+void render()
+{
+  background(230,230,230);
+  if(mousePressed)
+  {
+    Person p = (Person)group.get(0);
+    Vec2 pos = physics.worldToScreen(p.torso.getPosition());
+    line(mouseX,mouseY,pos.x,pos.y);
   }
 }
