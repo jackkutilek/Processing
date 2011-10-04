@@ -33,7 +33,7 @@ void initScene()
   BodyDef bd = new BodyDef();
   groundBody = world.createBody(bd);
   
-  group.add(new Person(100,100));
+  group.add(new Person(100,500));
 }
 
 void draw()
@@ -74,20 +74,26 @@ void update()
       initScene();
     }
   }
+  
+  for(int i = 0; i < group.size(); i++)
+  {
+    Person p = (Person)group.get(i);
+    p.update();
+  }
 }
 
 MouseJoint mouseJoint;
 
 void mousePressed()
 {
+   Person p = (Person)group.get(0);
    MouseJointDef mjd = new MouseJointDef();
    Vec2 target = physics.screenToWorld(mouseX,mouseY);
    mjd.target = target;
-   mjd.maxForce = 1000;
+   mjd.maxForce = 1000*p.biped.Chest.m_mass;
    mjd.dampingRatio = .5;
-   Person p = (Person)group.get(0);
    mjd.body1 = groundBody;
-   mjd.body2 = p.torso;
+   mjd.body2 = p.biped.Chest;
    mouseJoint = (MouseJoint)physics.getWorld().createJoint(mjd);
 }
 
@@ -107,7 +113,8 @@ void render()
   if(mousePressed)
   {
     Person p = (Person)group.get(0);
-    Vec2 pos = physics.worldToScreen(p.torso.getPosition());
+    Vec2 pos = physics.worldToScreen(p.biped.Chest.getPosition());
     line(mouseX,mouseY,pos.x,pos.y);
   }
 }
+
