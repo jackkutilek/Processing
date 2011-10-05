@@ -178,4 +178,27 @@
                 LWrist          = (RevoluteJoint)w.createJoint(def.LWristDef);
                 RWrist          = (RevoluteJoint)w.createJoint(def.RWristDef);
         }
+        
+
+        void Remove()
+        {
+          physics.removeBody(LFoot);
+          physics.removeBody(RFoot);
+          physics.removeBody(LCalf);
+          physics.removeBody(RCalf);
+          physics.removeBody(LThigh);
+          physics.removeBody(RThigh);
+          physics.removeBody(Pelvis);
+          physics.removeBody(Stomach);
+          physics.removeBody(Chest);
+          physics.removeBody(Neck);
+          physics.removeBody(Head);
+          physics.removeBody(LUpperArm);
+          physics.removeBody(RUpperArm);
+          physics.removeBody(LForearm);
+          physics.removeBody(RForearm);
+          physics.removeBody(LHand);
+          physics.removeBody(RHand);
+          
+        }
 }

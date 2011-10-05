@@ -13,7 +13,10 @@ Physics physics;
 World world;
 Body groundBody;
 
-ArrayList group = new ArrayList();
+int count = 0;
+int totalcount = 0;
+
+Person[] group = new Person[2];
 
 void setup()
 {
@@ -33,7 +36,17 @@ void initScene()
   BodyDef bd = new BodyDef();
   groundBody = world.createBody(bd);
   
-  group.add(new Person(100,500));
+  
+  Vec2 pos = physics.screenToWorld(400,200);
+  bd.position.set(pos);
+  PolygonDef s = new PolygonDef();
+  s.setAsBox(.2,500);
+  
+  Body b = world.createBody(bd);
+  b.createShape(s);
+  
+  group[0] = new Person(200,500);
+  group[1] = new Person(600,500);
 }
 
 void draw()
@@ -44,49 +57,33 @@ void draw()
 
 void update()
 {
-  if (keyPressed) {
-    if (key == '1') {
-      physics.createCircle(mouseX, mouseY, random(5,10));
-    } 
-    else if (key == '2') {
-      float sz = random(5,10);
-      physics.createRect(mouseX - sz, mouseY - sz, mouseX + sz, mouseY + sz);
+  if(count == 500)
+  {
+    for(int i = 0; i < group.length; i++)
+    {
+      group[i].Remove();
+      group[i] = new Person(200+400*(i),500);
     }
-    else if (key == '3') {
-      float sz = random(10,20);
-      physics.createPolygon(mouseX,      mouseY, 
-                            mouseX+sz,   mouseY, 
-                            mouseX+sz*.5,mouseY-sz);
-    }
-    else if (key == '4') {
-      int nVerts = floor(random(4,8));
-      float rad = random(5,10);
-      float[] vertices = new float[nVerts*2];
-      for (int i=0; i < nVerts; ++i) {
-        vertices[2*i] = mouseX + rad*sin(TWO_PI*i/nVerts);
-        vertices[2*i+1] = mouseY + rad*cos(TWO_PI*i/nVerts);
-      }
-      physics.createPolygon(vertices);
-    }
-      else {
-      //Reset everything
-      physics.destroy();
-      initScene();
-    }
+    count = 0;
+    totalcount++;
   }
   
-  for(int i = 0; i < group.size(); i++)
+  
+  
+  for(int i = 0; i < group.length; i++)
   {
-    Person p = (Person)group.get(i);
+    Person p = group[i];
     p.update();
   }
+  
+  count++;
 }
 
 MouseJoint mouseJoint;
 
 void mousePressed()
 {
-   Person p = (Person)group.get(0);
+   Person p = group[0];
    MouseJointDef mjd = new MouseJointDef();
    Vec2 target = physics.screenToWorld(mouseX,mouseY);
    mjd.target = target;
@@ -112,7 +109,7 @@ void render()
   background(230,230,230);
   if(mousePressed)
   {
-    Person p = (Person)group.get(0);
+    Person p = group[0];
     Vec2 pos = physics.worldToScreen(p.biped.Chest.getPosition());
     line(mouseX,mouseY,pos.x,pos.y);
   }
