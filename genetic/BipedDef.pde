@@ -92,7 +92,7 @@ public class BipedDef {
                 setRestitution(0.0f);
                 setLinearDamping(0.0f);
                 setAngularDamping(0.005f);
-                setGroupIndex(--bipedcount);
+                setGroupIndex(-groupCount);
                 enableMotor();
                 enableLimit();
 

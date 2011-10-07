@@ -182,23 +182,23 @@
 
         void Remove()
         {
-          physics.removeBody(LFoot);
-          physics.removeBody(RFoot);
-          physics.removeBody(LCalf);
-          physics.removeBody(RCalf);
-          physics.removeBody(LThigh);
-          physics.removeBody(RThigh);
-          physics.removeBody(Pelvis);
-          physics.removeBody(Stomach);
-          physics.removeBody(Chest);
-          physics.removeBody(Neck);
-          physics.removeBody(Head);
-          physics.removeBody(LUpperArm);
-          physics.removeBody(RUpperArm);
-          physics.removeBody(LForearm);
-          physics.removeBody(RForearm);
-          physics.removeBody(LHand);
-          physics.removeBody(RHand);
+          world.destroyBody(LFoot);
+          world.destroyBody(RFoot);
+          world.destroyBody(LCalf);
+          world.destroyBody(RCalf);
+          world.destroyBody(LThigh);
+          world.destroyBody(RThigh);
+          world.destroyBody(Pelvis);
+          world.destroyBody(Stomach);
+          world.destroyBody(Chest);
+          world.destroyBody(Neck);
+          world.destroyBody(Head);
+          world.destroyBody(LUpperArm);
+          world.destroyBody(RUpperArm);
+          world.destroyBody(LForearm);
+          world.destroyBody(RForearm);
+          world.destroyBody(LHand);
+          world.destroyBody(RHand);
           
         }
 }
